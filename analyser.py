@@ -1,7 +1,13 @@
+"""
+This module is used for analysing the audio from the speakers.
+TO-DO: Apply noise reduction to the audio for smoother result.
+"""
+
 from scipy.fftpack import rfft, rfftfreq
 import numpy as np
 from numba import jit
 
+# numba.jit speed up to prevent the analyser from lagging
 @jit(nopython = True, cache = True, fastmath = True)
 def loop(xf, yf, amps):
 
@@ -73,6 +79,11 @@ def loop(xf, yf, amps):
     return amps
 
 def analyse(data):
+    """
+    Analyse the audio data and split it into frequency ranges using FFT
+    Parameters:
+        data: numpy.ndarray containing audio data
+    """
     N = int(data.size)
 
     yf = np.array(np.abs(rfft(data)), np.float64)
